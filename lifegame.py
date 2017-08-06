@@ -1,3 +1,4 @@
+import sys #Para poder obtener los parámetros que se pasan al script
 import coloresAscii #Es un fichero en el mismo directorio donde he puesto las funciones para los
                     # colores para invocarlas hay que poner coloresAscii.funcion(param)
 
@@ -11,8 +12,16 @@ import coloresAscii #Es un fichero en el mismo directorio donde he puesto las fu
 # modificarlas
 
 #tamaño mundo
-ancho = 50
-alto = 6
+if len(sys.argv) >= 3:
+    try:
+        ancho = int(sys.argv[1]) #cast. El contenido de argv es de tipo str
+        alto = int(sys.argv[2])
+    except ValueError:
+        print("Altura y anchura deben ser valores numéricos")
+        sys.exit(1)
+else:
+    ancho = 50
+    alto = 6
 #estados bacterias
 muerte = 0
 crece = 1
@@ -20,22 +29,33 @@ crece = 1
 vacio = 0
 bacteria = 1
 #ciclos
-ciclos = 100
+if len(sys.argv) >= 4:
+    try:
+        ciclos = int(sys.argv[3])
+    except ValueError:
+        print("El número de ciclos debe ser un valor numérico")
+        sys.exit(1)
+else:
+    ciclos = 100
 #max y min para vida
-maxVida = 6
-minVida = 2
+maxVida = 3 
+minVida = 1
+#coordenadas de bacterias iniciales
+bacterias = [(1,2),(1,1),(1,3)]
 
+print("Lineas:",alto," filas:", ancho, " ciclos:", ciclos)
+input("Pulsa intro para continuar...")
 
 def checkEspacioCircundante(espacioCircundante, mundo, punto):
-	bact = espacio = 0
+	numBact = numVacio = 0
 	for x in range(espacioCircundante[0], espacioCircundante[1]+1): #hay que sumarle 1, pues es hasta ese número, pero no lo incluye
 		for y in range(espacioCircundante[2], espacioCircundante[3]+1):
 			if not (x == punto[0] and y == punto[1]):
 				if isBacteria(mundo, (x, y)):
-					bact = bact + 1
+					numBact = numBact + 1
 				else:
-					espacio = espacio + 1	#de momento no se usa...	
-	return (bact, espacio)
+					numVacio = numVacio + 1	#de momento no se usa...	
+	return (numBact, numVacio)
 
 def aplicaReglasVida(estadoEspacios):
 	bact, esp = estadoEspacios
@@ -83,15 +103,17 @@ def printmundo(mundo):
 				print(" " + coloresAscii.resetColor(), end="")
 		print();
 
-mundo = [[0 for n in range(ancho)] for row in range(alto)]
-bacterias = [(1,2),(1,1),(1,3)]
+def generadorMundo():
+    return [[vacio for n in range(ancho)] for row in range(alto)] 
+
+mundo = generadorMundo()
 
 mundo = estadoInicial(mundo, bacterias)
 print ("mundo inicial")
 printmundo(mundo)
 print ("------------------------------")
 
-newmundo = [[0 for n in range(ancho)] for row in range(alto)]
+newmundo = generadorMundo()
 
 z = 0
 while z < ciclos:
