@@ -8,6 +8,6 @@ Utilizo solo paradigma procedural.
 Objetivos específicos:  
 uso de funciones  
 uso de listas, tuplas, diccionarios, etc  
-importación de modulos
-Lectura de parámetros por línea de comando
+importación de modulos  
+Lectura de parámetros por línea de comando  
 
