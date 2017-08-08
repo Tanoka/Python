@@ -1,6 +1,6 @@
-# juego_vida_python
+# juego de la vida
 
-Objetivo: Aprender sintaxis básica de python, funciones más comunes y I/O.  
+Objetivo: Aprender sintaxis básica de python.
 
 Versión de python: Python 3+  
 Utilizo solo paradigma procedural.  
@@ -8,8 +8,6 @@ Utilizo solo paradigma procedural.
 Objetivos específicos:  
 uso de funciones  
 uso de listas, tuplas, diccionarios, etc  
-importación de librerías  
-Lectura/escritura por consola  
-Lectura/escritura de fichero  
-Lectura/escritura en base de datos  
+importación de modulos
+Lectura de parámetros por línea de comando
 
