@@ -12,11 +12,11 @@ from bacteriasini import bacterias  #coordenadas de baterias iniciales
 # modificarlas
 
 if '-h' in sys.argv or '--help' in sys.argv:
-    print("-l número de ciclos");a
-    print("-s pausa cada número de ciclos indicado");
-    print("-c número de columnas");
-    print("-f número de filas");
-
+    print("-l número de ciclos")
+    print("-s pausa cada número de ciclos indicado")
+    print("-c número de columnas")
+    print("-f número de filas")
+    sys.exit(1)
 #ciclos
 if '-l' in sys.argv:
     ciclos = int(sys.argv[sys.argv.index('-l') + 1])
