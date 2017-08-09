@@ -5,6 +5,8 @@ import coloresAscii #Es un fichero en el mismo directorio donde he puesto las fu
 vacio = 0
 
 def checkEspacioCircundante(espacioCircundante, mundo, punto):
+    """Comprueba el espacio indicado y retorna los parámetros que influyen para la vida 
+    de las bacterias"""
     numVacio = 0
     contTipoBact = { 1:0, 2:0 }
     for x in range(espacioCircundante[0], espacioCircundante[1]+1): #hay que sumarle 1, pues es hasta ese número, pero no lo incluye
@@ -19,6 +21,7 @@ def checkEspacioCircundante(espacioCircundante, mundo, punto):
     return (contTipoBact, numVacio)
 
 def aplicaReglasVida(estadoEspacios, maxVida, minVida):
+    "Aplica las reglas de la vida según los datos obtenidos sobre el estado de una zona"
     contTipoBact, esp = estadoEspacios
     totalVida = sum(contTipoBact.values()) #Casillas totales ocupadas por todos los tipos de bac.
     if (totalVida > maxVida) or (totalVida < minVida):
@@ -31,9 +34,11 @@ def aplicaReglasVida(estadoEspacios, maxVida, minVida):
     return tipoGanador[0]
 
 def getIndxFromValInDict(valor, diccionario):
+    "Retorna la key del valor buscado en un diccionario"
     return [key for (key, value) in diccionario.items() if value == valor]
 
 def estaRepetido(bus, lista):
+    "Función para ver si un valor está repetido en una lista"
     tmp = []
     for c in lista:
         if bus in tmp:
@@ -43,6 +48,7 @@ def estaRepetido(bus, lista):
     return False
 
 def getEspacioCircundate(mundo, punto):
+    "Retorna el espacio del mundo que interactua con el punto dado"
     x_ini = 0 if punto[0] - 1 < 0 else punto[0] - 1
     x_end = punto[0] if punto[0] + 1 >= len(mundo) else punto[0] + 1
     y_ini = 0 if punto[1] - 1 < 0 else punto[1] - 1
@@ -50,12 +56,14 @@ def getEspacioCircundate(mundo, punto):
     return (x_ini, x_end, y_ini, y_end)
 
 def queBacteria(mundo, posicion):
+    "Retorna el contenido de la posición indicada en el mundo de las bacterias"
     if mundo[posicion[0]][posicion[1]] == vacio:
         return False
     else:
         return mundo[posicion[0]][posicion[1]]
 
 def estadoInicial(mundo, bacterias):
+    "Introduce las bacterias en las posiones indicadas del mundo"
     for row in range(len(mundo)):
         for col in range(len(mundo[0])):
             for cepa in bacterias:
@@ -65,6 +73,7 @@ def estadoInicial(mundo, bacterias):
     return mundo
 
 def printmundo(mundo, tipoBacteria):
+    "Imprime en pantalla el mundo y sus bacterias"
     for x in range(len(mundo)):
         for y in range(len(mundo[0])):
             posi = mundo[x][y]
@@ -77,5 +86,6 @@ def printmundo(mundo, tipoBacteria):
         print();
 
 def generadorMundo(ancho, alto):
+    "Genera un array de array que representa al mundo de las bacterias"
     return [[vacio for n in range(ancho)] for row in range(alto)] 
 
