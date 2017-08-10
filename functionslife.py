@@ -4,18 +4,20 @@ import coloresAscii #Es un fichero en el mismo directorio donde he puesto las fu
 #variable global de este fichero, valor casilla mundo sin bacterias
 vacio = 0
 
-def checkEspacioCircundante(espacioCircundante, mundo, punto):
+def checkEspacioCircundante(espacioCircundante, tipoBacteria, mundo, punto):
     """Comprueba el espacio indicado y retorna los parámetros que influyen para la vida 
     de las bacterias"""
     numVacio = 0
-    contTipoBact = { 1:0, 2:0 }
-    for x in range(espacioCircundante[0], espacioCircundante[1]+1): #hay que sumarle 1, pues es hasta ese número, pero no lo incluye
+    #creamos un dictionary para contar cuantas bacterias hay de cada tipo
+    contTipoBact = { tipo: 0 for tipo in tipoBacteria.keys() }
+    #hay que sumar 1 al segundo valor de range(), la lista debe incluir el número final 
+    for x in range(espacioCircundante[0], espacioCircundante[1]+1): 
         for y in range(espacioCircundante[2], espacioCircundante[3]+1):
-            if not (x == punto[0] and y == punto[1]):
-                queBact = queBacteria(mundo, (x, y))
+            if not (x == punto[0] and y == punto[1]): #no chequeamos el punto donde estamos
+                queBact = mundo[x][y] #que bacteria hay en esa posicion
                 if queBact != vacio:
-                    contTipoBact[queBact] = contTipoBact[queBact] + 1 #obteniendo el total por cada
-                                                                      # tipo de bacteria
+                    #Obtenemos el total para cada tipo de bacteria
+                    contTipoBact[queBact] = contTipoBact[queBact] + 1 
                 else:
                     numVacio = numVacio + 1 #de momento no se usa...    
     return (contTipoBact, numVacio)
@@ -26,26 +28,21 @@ def aplicaReglasVida(estadoEspacios, maxVida, minVida):
     totalVida = sum(contTipoBact.values()) #Casillas totales ocupadas por todos los tipos de bac.
     if (totalVida > maxVida) or (totalVida < minVida):
         return vacio 
-    ganadoraBact = max(contTipoBact.values()) #bacteria que ocupa más casillas
-    if estaRepetido(ganadoraBact, contTipoBact):
+    ganadoraBact = max(contTipoBact.values()) #número mayor de un tipo de bacterias en las casillas
+    if isRepetidoInDictionary(ganadoraBact, contTipoBact): #Está repetido ese ńumero de bacterias?
         return vacio # hay el mismo número de las bacterias con el mayor número.. no se dejan
                       #crecer la una a la otra
-    tipoGanador = getIndxFromValInDict(ganadoraBact, contTipoBact)
-    return tipoGanador[0]
+    return getIndxFromValInDictio(ganadoraBact, contTipoBact) #cual es la bacteria ganadoraBact?
 
-def getIndxFromValInDict(valor, diccionario):
+def getIndxFromValInDictio(valor, diccionario):
     "Retorna la key del valor buscado en un diccionario"
-    return [key for (key, value) in diccionario.items() if value == valor]
+    clave = [key for (key, value) in diccionario.items() if value == valor].pop()
+    return clave
 
-def estaRepetido(bus, lista):
-    "Función para ver si un valor está repetido en una lista"
-    tmp = []
-    for c in lista:
-        if bus in tmp:
-           return True
-        else:
-           tmp.append(c)
-    return False
+def isRepetidoInDictionary(bus, dictio):
+    "Función para ver si un valor está repetido en un diccionario"
+    return list(dictio.values()).count(bus) > 1 #dict.values() no es una lista real..es una view
+        # object, para poder aplicar count hay que convertirlo en una lista real
 
 def getEspacioCircundate(mundo, punto):
     "Retorna el espacio del mundo que interactua con el punto dado"
@@ -54,13 +51,6 @@ def getEspacioCircundate(mundo, punto):
     y_ini = 0 if punto[1] - 1 < 0 else punto[1] - 1
     y_end = punto[1] if punto[1] + 1 >= len(mundo[0] ) else punto[1] + 1
     return (x_ini, x_end, y_ini, y_end)
-
-def queBacteria(mundo, posicion):
-    "Retorna el contenido de la posición indicada en el mundo de las bacterias"
-    if mundo[posicion[0]][posicion[1]] == vacio:
-        return False
-    else:
-        return mundo[posicion[0]][posicion[1]]
 
 def estadoInicial(mundo, bacterias):
     "Introduce las bacterias en las posiones indicadas del mundo"

@@ -78,7 +78,7 @@ while z < ciclos:
         for y in range(ancho):
             punto = (x, y)
             espacioCircundante = getEspacioCircundate(mundo, punto)
-            estadoEspacios = checkEspacioCircundante(espacioCircundante, mundo, punto)
+            estadoEspacios = checkEspacioCircundante(espacioCircundante, tipoBacteria, mundo, punto)
             newmundo[x][y] = aplicaReglasVida(estadoEspacios, maxVida, minVida)
     for x in range(alto):
         mundo[x] = newmundo[x][:] #copiar listas sin que sea por referencia. lista1 = lista2[:], lista1 = list(lista2)
